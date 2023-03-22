@@ -16,7 +16,6 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
         node: [14]
 
     steps:
@@ -45,3 +44,19 @@ jobs:
 
       - name: Run tests 🧪
         run: npm run test
+
+      - name: Login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.TOKEN}}
+
+      - name: Build new image
+        run: docker build . -t docker-td5
+
+      - name: Create Tag
+        run: docker tag docker-td5 ghcr.io/karen160/docker-td5:1.0.0
+
+      - name: Push Tag
+        run: docker push ghcr.io/karen160/docker-td5:1.0.0
