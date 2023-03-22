@@ -12,8 +12,11 @@ on:
 
 jobs:
   ci:
+    runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
+        os: [ubuntu-latest]
         node: [14]
 
     steps:
@@ -49,6 +52,7 @@ jobs:
           registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.TOKEN}}
+
 
       - name: Build new image
         run: docker build . -t docker-td5
